@@ -1,0 +1,135 @@
+/* src/CsvUploader.css */
+
+.csv-uploader {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+  }
+  
+  .file-input {
+    display: block;
+    margin-bottom: 20px;
+    color: #4CAF50;
+    cursor:pointer;
+  }
+
+  .filter-section {
+    margin-bottom: 20px;
+  }
+  
+  .filter-label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+  
+  .filter-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+
+  .download-button {
+    background-color: #4CAF50; /* Blue background */
+    color: white; /* White text */
+    border: none; /* No border */
+    padding: 10px 20px; /* Padding inside the button */
+    font-size: 16px; /* Text size */
+    font-weight: 600;
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease; /* Smooth background color change */
+  }
+  
+  .download-button:hover {
+    background-color: #387b3a;; /* Darker blue on hover */
+  }
+  
+  .download-button:focus {
+    outline: none; /* Remove default outline */
+  }
+  
+  .download-button:active {
+    background-color: #004494; /* Even darker blue when clicked */
+  }
+  
+  .error-message {
+    color: red;
+    font-weight: bold;
+  }
+  
+  .csv-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .table {
+    overflow-x: scroll;
+  }
+  
+  .csv-table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+  }
+  
+  .csv-table th {
+    background-color: #4CAF50;
+    color: white;
+  }
+
+
+  .csv-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+
+  
+  .table-header {
+    font-weight: bold;
+  }
+  
+  .table-cell {
+    vertical-align: middle;
+  }
+
+  .loader-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px; /* Adjust as needed */
+  }
+  
+  .filter-section {
+    display: flex;
+    flex-wrap: wrap; /* Allows items to wrap to the next line if necessary */
+    gap: 10px; /* Adds spacing between filter items */
+  }
+  .filter-section {
+    margin-bottom: 20px;
+  }
+  
+  .filter-item {
+    display: flex;
+    align-items: center; /* Center items vertically */
+    background-color: #f0f0f0; /* Background color for filter items */
+    padding: 15px; /* Padding inside each filter item */
+    border-radius: 10px; /* Rounded corners for filter items */
+    margin: 5px; /* Margin between filter items */
+  }
+  
+  .filter-item p {
+    margin: 0; /* Remove default margin for <p> */
+    flex: 1; /* Allow text to take up available space */
+  }
+  
+  .cross-button {
+    background: none;
+    border: none;
+    font-size: 20px; /* Adjust font size for the button */
+    color: #ff0000; /* Red color for the cross button */
+    cursor: pointer;
+    margin-left: 10px; /* Space between text and button */
+  }

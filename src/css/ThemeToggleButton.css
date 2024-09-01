@@ -1,0 +1,43 @@
+/* ThemeToggleButton.css */
+
+  
+.theme-toggle-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10x;
+  }
+  
+  .theme-toggle-checkbox {
+    display: none;
+  }
+  
+  .theme-toggle-label {
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+    background-color: #909090;
+    border-radius: 34px;
+    position: relative;
+    cursor: pointer;
+  }
+  
+  .theme-toggle-slider {
+    position: absolute;
+    /* top: 2px; */
+    left: 2px;
+    width: 26px;
+    height: 26px;
+    background-color: white;
+    border-radius: 50%;
+    transition: transform 0.3s;
+  }
+  
+  .theme-toggle-checkbox:checked + .theme-toggle-label {
+    background-color: #4CAF50; /* Color for the dark mode */
+  }
+  
+  .theme-toggle-checkbox:checked + .theme-toggle-label .theme-toggle-slider {
+    transform: translateX(26px);
+  }
+  
