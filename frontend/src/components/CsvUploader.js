@@ -63,6 +63,25 @@ const CsvUploader = () => {
     }
   };
 
+  const handleFilterData = async (query) => {
+    try{
+    setLoading(true)
+    const response = await fetch('http://127.0.0.1:8000/filter', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ dataframe: tableData, question: query }),
+    })
+    const result = await response.json();
+    dispach(actionCreators.addFilterAction(query))
+    dispach(actionCreators.setTableDataAction(JSON.parse(result.filtered_dataframe)))
+    setLoading(false)
+  }catch(err){
+    console.log(err)
+  }
+  };
+
   const downloadCSV = () => {
     const csv = convertToCSV(tableData);
     if (!csv) return;
@@ -101,7 +120,7 @@ const CsvUploader = () => {
       // Print the input value to the console
       // console.log('Input text:', inputRef.current.value);
 
-      dispach(actionCreators.addFilterAction(inputRef.current.value))
+      handleFilterData(inputRef.current.value);
 
       // Clear the input field
       inputRef.current.value = '';
