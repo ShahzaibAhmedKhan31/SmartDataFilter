@@ -64,23 +64,52 @@ const CsvUploader = () => {
   };
 
   const handleFilterData = async (query) => {
-    try{
-    setLoading(true)
-    const response = await fetch('http://127.0.0.1:8000/filter', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ dataframe: tableData, question: query }),
-    })
-    const result = await response.json();
-    dispach(actionCreators.addFilterAction(query))
-    dispach(actionCreators.setTableDataAction(JSON.parse(result.filtered_dataframe)))
-    setLoading(false)
-  }catch(err){
-    console.log(err)
-  }
+    try {
+      setLoading(true);
+  
+      // Make the API request
+      const response = await fetch('http://127.0.0.1:8000/filter', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ dataframe: tableData, question: query }),
+      });
+  
+      // Check for HTTP response errors
+      if (!response.ok) {
+        const errorText = await response.json();
+        console.log(errorText.detail)
+         // Capture the error response
+        toast.error(errorText.detail, toastOptions);
+        setLoading(false);
+        throw new Error(`HTTP error! Status: ${response.status}, Message: ${errorText}`);
+      }
+  
+      // Parse the JSON response
+      const result = await response.json();
+  
+      // Validate the response
+      if (!result.filtered_dataframe) {
+        toast.error("Invalid response structure from server", toastOptions);
+        setLoading(false);
+        throw new Error('Invalid response structure from server');
+      }
+  
+      // Update state and dispatch actions
+      setLoading(false);
+      dispach(actionCreators.addFilterAction(query));
+      dispach(actionCreators.setTableDataAction(JSON.parse(result.filtered_dataframe)));
+  
+    } catch (err) {
+      // Handle errors and show notifications
+      // console.log(err.status)
+      console.error(err)
+      toast.error(err, toastOptions);
+      setLoading(false);
+    }
   };
+  
 
   const downloadCSV = () => {
     const csv = convertToCSV(tableData);
