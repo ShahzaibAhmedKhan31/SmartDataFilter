@@ -67,6 +67,7 @@ async def json_to_dataframe(data: DataRow):
 
         if ai_response == 'Yes':
             filter_ai_respose_code = handle_filteration.filterChainAnswer(data.question, df_columns, types, unique_object)
+            print(filter_ai_respose_code)
             filtered_ai_dataframe = handle_filteration.filterDataFrame(df, filter_ai_respose_code)
             return JSONResponse(
                 content={

@@ -2,6 +2,7 @@ from fastapi import HTTPException
 import configparser
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
+import os
 
 
 # Create a ConfigParser object
@@ -15,21 +16,15 @@ class HandleFilteration():
 
     def __init__(self):
 
-        self.key = config.get('OPENAI', 'KEY')
         self.model = config.get('OPENAI', 'MODEL')
-        self.filter_chain = self.FilterLLMChain()
+        if not os.environ.get("OPENAI_API_KEY"):
+            os.environ["OPENAI_API_KEY"] = config.get('OPENAI', 'KEY')
         self.tackle_user_input_chain = self.tackleUserInputLLMChain()
+        self.filter_chain = self.FilterLLMChain()
         
     
-    def TackleUserInput(self, user_input):
-        return user_input
-    
-    def Filter(self, user_input):
-        return user_input
-    
     def FilterLLMChain(self):
-        llm = ChatOpenAI( model=self.model, temperature=0, api_key=self.key )
-
+        llm = ChatOpenAI( model=self.model, temperature=0)
         prompt = ChatPromptTemplate.from_messages(
             [
                 (
@@ -65,15 +60,16 @@ class HandleFilteration():
 
 
     def tackleUserInputLLMChain(self):
-        llm = ChatOpenAI( model=self.model, temperature=0, api_key=self.key )
+        llm = ChatOpenAI(model=self.model, temperature=0)
         prompt = ChatPromptTemplate.from_messages([
-        ("system", ''''Hello, you are a helpful assistant. Below you will find information about dataframe columns and its data type:
-                    **Columns:** {df_columns}  
-                    **DataType:** {types}
-                    Your task is to anaylze user query and use the above info of Dataframe to tell whether user query is relevant or not.
-                    Your answer would be Yes or No.
+        ("system", '''Hello, you are a helpful assistant that analyze the user query and determine whether it is relevant to the dataframe. Below you will find information about a dataframe's columns and their data types:
+                    - **Columns:** {df_columns}  
+                    - **DataType:** {types}
+
+                    Your task is to analyze the user query and determine whether it is relevant to the dataframe. A query is considered RELEVANT if it refers to one or more of the provided **Columns** or if the requested operation aligns with the **Datatype**. Answer with **Yes** or **No**.
+
          '''),
-        ("human", "input_question")
+        ("human", "{input_question}")
     ])
         chain = prompt | llm
 
@@ -84,7 +80,7 @@ class HandleFilteration():
     def filterChainAnswer(self, user_query, columns, types, unique_objects):
         try:
             answer = self.filter_chain.invoke({ "input_question": user_query, "df_columns": columns, "types": types, "unique_object": unique_objects })
-            return answer
+            return answer.content
         except Exception as e:
             print(f"Error in filter Chain: {e}")
             # Raise an HTTPException with a detailed error message
@@ -94,7 +90,7 @@ class HandleFilteration():
     def tackleUserChainAnswer(self, user_query, columns, types):
         try:
             answer = self.tackle_user_input_chain.invoke({ "input_question": user_query, "df_columns": columns, "types": types})
-            return answer
+            return answer.content
         except Exception as e:
             print(f"Error in tackle User Chain: {e}")
             # Raise an HTTPException with a detailed error message
