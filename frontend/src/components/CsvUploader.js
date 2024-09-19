@@ -15,6 +15,7 @@ const CsvUploader = () => {
   const [error, setError] = useState(null);
   const inputRef = useRef(null);
   const [loading, setLoading] = useState(false);
+  const [initialState, setInitialState] = useState("");
   
 
   const dispach = useDispatch();
@@ -49,16 +50,19 @@ const CsvUploader = () => {
         // Set data from response
         if (result.data) {
         dispach(actionCreators.setTableDataAction(JSON.parse(result.data)))
+        setInitialState(JSON.parse(result.data))
         setLoading(false)
         }
         else{
           console.log(result)
           toast.error(result.detail, toastOptions);
           setLoading(false);
+          event.target.value = null; // This clears the input
         }
       } catch (err) {
         toast.error(err.message, toastOptions);
         setLoading(false);
+        event.target.value = null; // This clears the input
       }
     }
   };
@@ -159,8 +163,14 @@ const CsvUploader = () => {
     }
   };
 
-  const removeFilter = (filter) => {
-    dispach(actionCreators.removeFilterAction(filter))
+  // const removeFilter = (filter) => {
+  //   dispach(actionCreators.removeFilterAction(filter))
+  // }
+
+  const clearAllFilters = () => {
+    dispach(actionCreators.setTableDataAction(initialState));
+    dispach(actionCreators.clearFilterAction());
+
   }
 
     // Determine placeholder text based on tableData
@@ -198,15 +208,18 @@ const CsvUploader = () => {
       )}
       {error && <p className="error-message">Error: {error}</p>}
       {filters && filters.length > 0 && (
-        <div className="filter-section">
-          {filters.map((filter, index) => (
-            <div key={index} className='filter-item'>
-              <p>{filter}</p>
-              <button className="cross-button" onClick={() => removeFilter(filter)}>&times;</button>
-            </div>
-          ))}
-        </div>
-      )}
+      <div className="filter-section">
+        {filters.map((filter, index) => (
+          <div key={index} className='filter-item'>
+            <p>{filter}</p>
+            {/* <button className="cross-button" onClick={() => removeFilter(filter)}>&times;</button> */}
+          </div>
+        ))}
+        <button className="clear-filters-button" onClick={clearAllFilters}>
+          Clear All
+        </button>
+      </div>
+    )}
       {tableData.length > 0 && (
         <div className='table'>
           <table className="csv-table">

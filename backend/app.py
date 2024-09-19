@@ -6,11 +6,18 @@ from fastapi.responses import JSONResponse
 import pandas as pd
 import io
 from handleFilteration import HandleFilteration
+import configparser
 
 
 handle_filteration = HandleFilteration()
 
 app = FastAPI()
+
+# Create a ConfigParser object
+config = configparser.ConfigParser()
+
+# Read the configuration file
+config.read('CONFIG.INI')
 
 # Add CORS middleware
 app.add_middleware(
@@ -36,6 +43,10 @@ async def upload_file(file: UploadFile = File(...)):
     except Exception as e:
         print(e)
         raise HTTPException(status_code=400, detail=f"Error processing file: {str(e)}")
+    
+    # Check the number of rows in the DataFrame
+    if len(df) > int(config.get('CSV', 'ROWS')):
+        raise HTTPException(status_code=400, detail="Uploaded file exceeds 20 rows")
 
     # Convert the DataFrame to JSON
     df_json = df.to_json(orient="records")

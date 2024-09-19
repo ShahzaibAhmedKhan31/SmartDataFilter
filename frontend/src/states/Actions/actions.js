@@ -24,3 +24,12 @@ export const removeFilterAction = (filter) => {
         });
     };
 };
+
+export const clearFilterAction = () => {
+    return (dispatch) => {
+        dispatch({
+            type: "Clear_FILTER_ACTION",
+            payload: []
+        });
+    };
+};

@@ -14,6 +14,8 @@ export const filtersReducer = (state = [], action) => {
             return [...state, action.payload]; // Add new filter
         case "REMOVE_FILTER_ACTION":
             return state.filter(filter => filter !== action.payload); // Remove filter
+        case "Clear_FILTER_ACTION":
+            return action.payload
         default:
             return state; // Return current state if no action matches
     }

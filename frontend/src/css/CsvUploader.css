@@ -133,3 +133,32 @@
     cursor: pointer;
     margin-left: 10px; /* Space between text and button */
   }
+  .clear-filters-button {
+    background-color: #f44336; /* Red color */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    margin: 5px; /* Margin between filter items */
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px; /* Match the font size of filter items */
+    font-weight: 600; /* Make the text bold */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Transition for scale effect */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Reduced shadow for consistency */
+  }
+  
+  .clear-filters-button:hover {
+    background-color: #d32f2f; /* Darker red on hover */
+    transform: scale(1.05); /* Slightly scale up on hover */
+  }
+  
+  .clear-filters-button:focus {
+    outline: none; /* Remove default outline */
+    box-shadow: 0 0 0 3px rgba(244, 67, 54, 0.5); /* Add focus ring */
+  }
+  
+  .clear-filters-button:active {
+    background-color: #c62828; /* Even darker red when clicked */
+    transform: scale(0.95); /* Slightly scale down when clicked */
+  }
+  
